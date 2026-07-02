@@ -1,15 +1,15 @@
-## Justification / Approach
+## Description
+<!-- Describe your changes in detail -->
 
-In this section we provide a summary of the decisions made and the outcome of our changes in this PR. This can be as simple as detailing where we are making changes or as detailed as the Architectural decisions behind all the changes.
-
-## Output
-
-Here we provided outputs associated to the end result in case this is a FE application a Screenshot is required.
+## Type of Change
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Documentation update
 
 ## Checklist
-
-PRs must include the following:
-
- - [ ] Technical description of the implementation.
- - [ ] Screenshots of the implementation if the story includes UI changes.
- - [ ] Unit test cases.
+- [ ] My code follows the project code style
+- [ ] I have performed a self-review of my code
+- [ ] I have added tests that prove my fix/feature works
+- [ ] New and existing unit tests pass locally
+- [ ] I have updated documentation if needed

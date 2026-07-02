@@ -1,22 +1,38 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.kts.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ProGuard rules for the app module
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Kotlinx Serialization
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+-keepclassmembers class kotlinx.serialization.json.** {
+  *** Companion;
+}
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+  kotlinx.serialization.KSerializer serializer(...);
+}
+-keep,includedescriptorclasses class com.app.**$$serializer { *; }
+-keepclassmembers class com.app.** {
+  *** Companion;
+}
+-keepclasseswithmembers class com.app.** {
+  kotlinx.serialization.KSerializer serializer(...);
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Retrofit
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+  @retrofit2.http.* <methods>;
+}
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn javax.annotation.**
+-dontwarn kotlin.Unit
+-dontwarn retrofit2.KotlinExtensions
+-dontwarn retrofit2.KotlinExtensions$*
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
--keep class androidx.lifecycle.DefaultLifecycleObserver
+# OkHttp
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
+# Coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}

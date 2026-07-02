@@ -1,75 +1,110 @@
+# Android Kotlin Boilerplate
 
-<img src="https://www.celerik.com/wp-content/uploads/2019/12/celerik-1.svg" alt="Celerik"  width="300" height="80"/>
+A modern Android project template with **multi-module architecture**, **MVVM**, and production-ready tooling.
 
- [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=celerik_android-kotlin-boilerplate&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=celerik_android-kotlin-boilerplate) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=celerik_android-kotlin-boilerplate&metric=code_smells)](https://sonarcloud.io/dashboard?id=celerik_android-kotlin-boilerplate) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=celerik_android-kotlin-boilerplate&metric=ncloc)](https://sonarcloud.io/dashboard?id=celerik_android-kotlin-boilerplate)
+## Tech Stack
 
-# Welcome to Android Kotlin Boilerplate!  
-  
-## Getting Started  
-Android Kotlin Boilerplate refers to standardized methods, procedures and files that may be used over again for efficiency developing new Android mobile applications.  
-  
-## What's included  
-* An Android app with _modular architecture_ and _MVVM_ architectural pattern.
-* _Splash screen_ with app version and empty _MainActivity_.
-* _Network connectivity interceptor_ for HTTP requests.
-* _Dagger2_ for dependencies injection.
-* _ViewBinding_ for activities and fragments.
-* _Timber_ for logging purposes.
-* Android Studio _EditorConfig_ file to maintain consistent coding styles.
-* Gradle’s Kotlin _DSL_.
-* _SonarQube_ configuration files.
-* _JaCoCo_ maven plugin to generate test coverage reports.
-* _ktlint_ for static code analysis.
-* _LeakCanary_ for memory leaks detection.
-* _Fastlane_ for CI/CD tasks.
-* _SonarCloud_ for static code analysis.
-* _Github_ workflows for automated PR actions and Firebase app distribution.
-* _Azure DevOps Pipelines_ workflows for automated PR actions.
-* _dokka_ for Kotlin's documentation generation.
+| Category | Technology |
+|---|---|
+| **Language** | Kotlin 2.1 |
+| **UI** | Jetpack Compose + Material 3 |
+| **Architecture** | Multi-module MVVM + Clean Architecture |
+| **DI** | Hilt |
+| **Async** | Coroutines + Flow |
+| **Networking** | Retrofit + OkHttp + Kotlinx Serialization |
+| **Navigation** | Compose Navigation |
+| **Local Storage** | DataStore Preferences |
+| **Image Loading** | Coil |
+| **Logging** | Timber |
+| **Testing** | JUnit 5 + MockK + Turbine |
+| **Code Quality** | ktlint + Detekt + SonarCloud |
+| **CI/CD** | GitHub Actions + Fastlane |
+| **Build System** | Gradle 8.11 + Version Catalog |
 
-## Installation  
-Clone this repository and import it into **Android Studio**  
-```bash  
-git clone https://github.com/celerik/android-kotlin-boilerplate.git  
-```  
-  
-## Build variants  
-Herein you can find multiple targets that the app takes into account:  
-  
-|          |Staging    |Production  |
-|----------|-----------|------------|  
-|`Internal`|Debug      |Debug       |
-|`External`|Release     |Release    |
-  
- Where the following formed variants are built for staging purposes:  
-- stagingInternalDebug  
-- stagingInternalRelease  
-  
- And these ones for production purposes:  
-- productionInternalDebug  
-- productionInternalRelease  
-- productionExternalDebug  
-- productionExternalRelease  
-  
-**_Sidenote:_**  environments with _Internal_ keyword, for example, could set a specific timeout for debug servers, whereas environments with _External_ keyword could have another timeout according to production servers' features. In the other hand, environments with _Debug_ keyword, could keep a debug logger activated; whereas environments with _Release_ keyword don't.  
-  
-## Debug app signing
-In order to sign your debug app build using _debug-keystore.jks_ keystore, these are the credentials you will have to take in mind:
-   
-`STORE_FILE = ./app/debug-keystore.jks`
+## Module Structure
 
-`STORE_PASSWORD = android`
+```
+├── app                  Application entry point, navigation, DI
+├── core/
+│   ├── common           Pure Kotlin: Result type, extensions, models
+│   ├── domain           Use cases, repository interfaces
+│   ├── data             Repository implementations, DataStore
+│   ├── network          Retrofit, OkHttp, interceptors
+│   ├── ui               Compose theme, design system, components
+│   └── testing          Test utilities, JUnit extensions
+└── feature/
+    └── home             Example feature module
+```
 
-`KEY_ALIAS = android_celerik`
+### Dependency Graph
 
-`KEY_PASSWORD = android`
-  
-## Others  
-1. Project's CodeStyle can be found [here](docs/codestyle.md).  
-2. Project utilities file can be found [here](docs/utilities.md).
-3. CI/CD documentation can be found [here](docs/cicd.md).  
+```
+feature:home ──→ core:domain ──→ core:common
+     │                │
+     ├──→ core:ui     │
+     │                ↓
+     ↓          core:data ──→ core:network ──→ core:common
+    app ──→ (all modules)
+```
 
-## Screenshots  
-  
-![Screenshot_1626474458](https://user-images.githubusercontent.com/25390317/126014560-dbd18cf5-75f9-4e0a-a72e-9b63e6db0bf4.png)
-![Screenshot_1626474925](https://user-images.githubusercontent.com/25390317/126014713-1c25cf42-7307-4d05-b121-5be96abdf1a4.png)
+## Getting Started
+
+### Prerequisites
+- Android Studio Ladybug (2024.2) or later
+- JDK 17
+- Android SDK 35
+
+### Setup
+```bash
+git clone https://github.com/celerik/android-kotlin-boilerplate.git
+cd android-kotlin-boilerplate
+```
+
+Open in Android Studio and sync Gradle.
+
+### Build Variants
+
+| Environment | Build Type | Variant |
+|---|---|---|
+| Staging | Debug | `stagingDebug` |
+| Staging | Release | `stagingRelease` |
+| Production | Debug | `productionDebug` |
+| Production | Release | `productionRelease` |
+
+### Run
+
+```bash
+# Debug build
+./gradlew assembleStagingDebug
+
+# Run all tests
+./gradlew test
+
+# Run linters
+./gradlew ktlintCheck detekt
+```
+
+## Creating a New Feature Module
+
+1. Create `feature/<name>/build.gradle.kts` (copy from `feature/home/`)
+2. Add `include(":feature:<name>")` to `settings.gradle.kts`
+3. Create your screen, ViewModel, and UI state
+4. Add navigation extensions in `feature/<name>/navigation/`
+5. Register the navigation in `app/.../navigation/AppNavigation.kt`
+
+## Adding a New API Service
+
+1. Define the Retrofit interface in `core/network/`
+2. Add it to `NetworkModule` as a `@Provides` function
+3. Create a repository interface in `core/domain/`
+4. Implement it in `core/data/` and bind via `DataModule`
+5. Create a use case in `core/domain/`
+
+## CI/CD
+
+- **PR Checks**: Runs ktlint, detekt, and unit tests on every pull request
+- **Distribution**: Tags matching `v*.*.*-Beta` trigger staging APK build and Firebase App Distribution
+
+## License
+
+This project is available under the MIT License.
