@@ -60,6 +60,7 @@ git clone https://github.com/celerik/android-kotlin-boilerplate.git
 cd android-kotlin-boilerplate
 ```
 
+
 Open in Android Studio and sync Gradle.
 
 ### Build Variants
@@ -83,6 +84,41 @@ Open in Android Studio and sync Gradle.
 # Run linters
 ./gradlew ktlintCheck detekt
 ```
+
+### ARM64 Linux Build Note
+
+On Linux ARM64 hosts (for example Oracle/Graviton-style VPS machines), the default AAPT2 binary pulled by the Android SDK or Gradle may be x86_64-only and can fail with errors like:
+
+- `Failed to start AAPT2 process`
+- `Process unexpectedly exit`
+
+This project supports an ARM64 workaround by overriding AAPT2 with a local ARM64 binary.
+
+Current project setting:
+
+```properties
+android.aapt2FromMavenOverride=/home/ubuntu/.android/bin/aapt2
+```
+
+Recommended host setup:
+
+1. Install Android SDK normally.
+2. Download an ARM64-compatible `aapt2` binary.
+3. Place it at:
+   - `/home/ubuntu/.android/bin/aapt2`
+4. Make it executable:
+
+```bash
+chmod +x /home/ubuntu/.android/bin/aapt2
+```
+
+After that, full builds such as the following should work on ARM64 hosts:
+
+```bash
+./gradlew clean assembleDebug
+```
+
+If you are building on x86_64 Linux or in Android Studio on a standard desktop setup, this workaround is usually not needed
 
 ## Creating a New Feature Module
 
