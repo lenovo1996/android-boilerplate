@@ -9,7 +9,6 @@ plugins {
   alias(libs.plugins.ksp) apply false
   alias(libs.plugins.ktlint)
   alias(libs.plugins.detekt)
-  alias(libs.plugins.sonarqube)
 }
 
 allprojects {
@@ -40,14 +39,6 @@ subprojects {
   }
 }
 
-sonarqube {
-  properties {
-    property("sonar.organization", "celerik")
-    property("sonar.projectKey", "celerik_android-kotlin-boilerplate")
-    property("sonar.host.url", "https://sonarcloud.io")
-    property("sonar.sourceEncoding", "UTF-8")
-  }
-}
 
 tasks.register("clean", Delete::class.java) {
   delete(rootProject.layout.buildDirectory)

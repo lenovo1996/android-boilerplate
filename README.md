@@ -17,7 +17,7 @@ A modern Android project template with **multi-module architecture**, **MVVM**, 
 | **Image Loading** | Coil |
 | **Logging** | Timber |
 | **Testing** | JUnit 5 + MockK + Turbine |
-| **Code Quality** | ktlint + Detekt + SonarCloud |
+| **Code Quality** | ktlint + Detekt |
 | **CI/CD** | GitHub Actions + Fastlane |
 | **Build System** | Gradle 8.11 + Version Catalog |
 
@@ -25,26 +25,26 @@ A modern Android project template with **multi-module architecture**, **MVVM**, 
 
 ```
 ├── app                  Application entry point, navigation, DI
-├── core/
-│   ├── common           Pure Kotlin: Result type, extensions, models
-│   ├── domain           Use cases, repository interfaces
-│   ├── data             Repository implementations, DataStore
-│   ├── network          Retrofit, OkHttp, interceptors
-│   ├── ui               Compose theme, design system, components
-│   └── testing          Test utilities, JUnit extensions
-└── feature/
-    └── home             Example feature module
+└── core/
+    ├── common           Pure Kotlin: Result type, extensions, models
+    ├── domain           Use cases, repository interfaces
+    ├── data             Repository implementations, DataStore
+    ├── network          Retrofit, OkHttp, interceptors
+    ├── ui               Compose theme, design system, components
+    └── testing          Test utilities, JUnit extensions
 ```
 
 ### Dependency Graph
 
 ```
-feature:home ──→ core:domain ──→ core:common
-     │                │
-     ├──→ core:ui     │
-     │                ↓
-     ↓          core:data ──→ core:network ──→ core:common
-    app ──→ (all modules)
+core:domain ──→ core:common
+     │
+     ↓
+ core:data ──→ core:network ──→ core:common
+     ↑
+  core:ui
+
+app ──→ (all modules)
 ```
 
 ## Getting Started
@@ -86,7 +86,7 @@ Open in Android Studio and sync Gradle.
 
 ## Creating a New Feature Module
 
-1. Create `feature/<name>/build.gradle.kts` (copy from `feature/home/`)
+1. Create `feature/<name>/build.gradle.kts` (copy from `core/ui/build.gradle.kts` and adjust)
 2. Add `include(":feature:<name>")` to `settings.gradle.kts`
 3. Create your screen, ViewModel, and UI state
 4. Add navigation extensions in `feature/<name>/navigation/`
