@@ -19,7 +19,7 @@
     "devteam_task": {
       "command": "node",
       "args": [
-        ".dev-team/mcp/dist/index.js"
+        "/home/ubuntu/Agent-Orchestrator/mcp/dist/index.js"
       ]
     }
   }
