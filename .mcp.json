@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ]
+    },
+    "git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "."
+      ]
+    },
+    "devteam_task": {
+      "command": "node",
+      "args": [
+        "/home/ubuntu/Agent-Orchestrator/mcp/dist/index.js"
+      ]
+    }
+  }
+}
